@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Form</title>
+<style>
+  /* Add your CSS styles here */
+</style>
+<script>
+  function sendData() {
+    var amount = document.getElementById("amount").value;
+    var transactionType = document.querySelector('input[name="transactionType"]:checked').value;
+    
+    var apiEndpoint = '';
+    if (transactionType === 'credit') {
+      apiEndpoint = 'credit_api_endpoint';
+    } else if (transactionType === 'debit') {
+      apiEndpoint = 'debit_api_endpoint';
+    }
+    
+    // Call API
+    fetch(apiEndpoint, {
+      method: 'POST',
+      body: JSON.stringify({ amount: amount }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('API response:', data);
+      // Handle response as needed
+    })
+    .catch(error => {
+      console.error('Error calling API:', error);
+      // Handle error as needed
+    });
+  }
+</script>
+</head>
+<body>
+  <h1>Transaction Form</h1>
+  <form>
+    <label><input type="radio" name="transactionType" value="credit"> Credit</label>
+    <label><input type="radio" name="transactionType" value="debit"> Debit</label><br><br>
+  
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" name="amount"><br><br>
+  
+    <button type="button" onclick="sendData()">Submit</button>
+  </form>
+</body>
+</html>
