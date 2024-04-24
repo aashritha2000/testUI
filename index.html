@@ -9,20 +9,25 @@
 </style>
 <script>
   function sendData() {
-    var amount = document.getElementById("amount").value;
+    console.log("trying to send api")
+    const URL = 'http://np-ws-feed-alb-1782231454.eu-west-2.elb.amazonaws.com/api/v1/account';
+    const amount = parseFloat(document.getElementById("amount").value);
     var transactionType = document.querySelector('input[name="transactionType"]:checked').value;
     
     var apiEndpoint = '';
-    if (transactionType === 'credit') {
-      apiEndpoint = 'credit_api_endpoint';
-    } else if (transactionType === 'debit') {
-      apiEndpoint = 'debit_api_endpoint';
+    if (transactionType === 'deposit') {
+      apiEndpoint = URL + '/deposit';
+    } else if (transactionType === 'withdraw') {
+      apiEndpoint = URL + '/withdraw';
     }
     
+    var userId = new URLSearchParams(window.location.search).get('id')
+    console.log(userId)
+
     // Call API
     fetch(apiEndpoint, {
       method: 'POST',
-      body: JSON.stringify({ amount: amount }),
+      body: JSON.stringify({ amount: amount, uId: userId}),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -42,8 +47,8 @@
 <body>
   <h1>Transaction Form</h1>
   <form>
-    <label><input type="radio" name="transactionType" value="credit"> Credit</label>
-    <label><input type="radio" name="transactionType" value="debit"> Debit</label><br><br>
+    <label><input type="radio" name="transactionType" value="deposit"> Deposit</label>
+    <label><input type="radio" name="transactionType" value="withdraw"> Withdraw</label><br><br>
   
     <label for="amount">Amount:</label>
     <input type="number" id="amount" name="amount"><br><br>
