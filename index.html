@@ -11,7 +11,7 @@
 <script>
   function sendData() {
     console.log("trying to send api")
-    const URL = 'http://np-ws-feed-alb-1782231454.eu-west-2.elb.amazonaws.com/api/v1/account';
+    const URL = 'https://stage-arfeed.mysportsfeed.io/api/v1/account';
     const amount = parseFloat(document.getElementById("amount").value);
     var transactionType = document.querySelector('input[name="transactionType"]:checked').value;
     
